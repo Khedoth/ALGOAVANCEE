@@ -95,4 +95,31 @@
 			\mbox{durée} & \leftarrow & \mbox{durée} - x_{i}
 		\end{eqnarray*}
 
+	\subsection{Algorithme}
+
+Procédure $ordonnancement_simple(ent i)$;
+var ent k, $x_{i}$, D;
+début
+	$S_{i} = [1..k];$
+	pour $x_{i}$ de 1 à k faire
+		si $\sum_{1}^{i} x_{l} <= D$ alors
+			$T[i] <- x_{i};$
+			$cout <- cout + cd[i][x_{i}];$
+			$duree <- duree + x_{i};$
+
+			si i = n alors $Affiche_sol()$;
+			sinon
+				$ordonnancement_simple(i+1)$;
+			fsi;
+
+		T[i] <- 0;
+		$cout <- cout - cd[i][x_{i}];$
+		$duree <- duree - x_{i};	$
+
+		fsi;
+	fait;
+fin;
+
+Appel : $ordonnancement_simple(1)$;
+
 \end{document}

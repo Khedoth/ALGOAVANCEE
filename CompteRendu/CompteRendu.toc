@@ -10,3 +10,4 @@
 \contentsline {paragraph}{}{2}
 \contentsline {paragraph}{}{2}
 \contentsline {paragraph}{}{2}
+\contentsline {subsection}{\numberline {3.2}Algorithme}{3}
