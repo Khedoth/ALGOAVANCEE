@@ -2,14 +2,11 @@
 
 \usepackage[utf8]{inputenc} % accents
 \usepackage[T1]{fontenc}      % caractères français
-\usepackage{geometry}         % marges
+\usepackage[margin=1in]{geometry}         % marges
 \usepackage[francais]{babel}  % langue
 \usepackage{graphicx,subfigure}         % images
 \usepackage{verbatim}         % texte préformaté
 \usepackage{float}
-
-
-
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -102,36 +99,49 @@
 
 		\subsubsection{Sans élagage}
 
+			Cet algorithme repose sur le modèle de programmation de recherche d'une solution optimale par essais successifs.
+			Le principe est d'essayer toutes les combinaisons possibles tant qu'elles sont satisfaisantes, c'est-à-dire dans notre cas que la somme partielle des durées choisies est inférieure à la durée maximale autorisée D.
+			Pour obtenir la solution optimale, on vérifie que le coût d'une solution obtenue est strictement inférieur au coût de la meilleure solution trouvée, auquel cas on l'affiche.
+			La dernière solution affichée sera donc la solution optimale.
+
+			L'appel de l'algorithme consiste à initialiser le coût optimal au coût maximal qu'il est possible d'obtenir, puis à appeler la procédure au rang 1, c'est-à-dire commencer par choisir la durée de la première tâche $T_{1}$.
+
 			\begin{tabbing}
 
-			\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
+			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
 
-			Procédure $ordonnancement\_simple(ent i)$; \\
-			var ent k, $x_{i}$, D; \\
-			début \\
-				\> $S_{i} = [1..k];$ \\
-				\> pour $x_{i}$ de 1 à k faire
-					\>\> si $\sum_{1}^{i} x_{l} <= D$ alors
-						\>\>\> $T[i] <- x_{i};$
-						\>\>\> $cout <- cout + cd[i][x_{i}];$
-						\>\>\> $duree <- duree + x_{i};$
+			\textbf{procédure} $ordonnancement\_simple$ (ent i); \\
+			\textbf{var} ent n, k, $x_{i}$, D; \\
+			\textbf{var} ent cout, duree; \\
+			\textbf{début} \\
+			\> $cout \leftarrow 0;$ \\
+			\> $duree \leftarrow 0;$ \\
+			\> \textbf{pour} $x_{i}$ \textbf{de} 1 \textbf{à} k \textbf{faire} \\
+			\>\> \textbf{si} $duree\le D$ \textbf{alors} \\
+			\>\>\> $T[i] \leftarrow x_{i};$ \\
+			\>\>\> $cout \leftarrow cout + cd[i][x_{i}];$ \\
+			\>\>\> $duree \leftarrow duree + x_{i};$ \\
 
-						\>\>\> si i = n alors $Affiche\_sol()$;
-						\>\>\> sinon
-							\>\>\> $ordonnancement\_simple(i+1)$;
-						\>\>\> fsi;
+			\>\>\> \textbf{si} i = n \textbf{alors} \\
+			\>\>\>\> \textbf{si} $cout < cout\_opt$ \textbf{alors} \\
+			\>\>\>\>\> $affiche(T)$; \\
+			\>\>\>\> \textbf{fsi}; \\
 
-						\>\>\> T[i] <- 0;
-						\>\>\> $cout <- cout - cd[i][x_{i}];$
-						\>\>\> $duree <- duree - x_{i};	$
-					\>\> fsi;
-				\> fait;
-			fin;
+			\>\>\> \textbf{sinon} \\
+			\>\>\>\> $ordonnancement\_simple(i+1)$; \\
+			\>\>\> \textbf{fsi}; \\
+
+			\>\>\> $T[i] \leftarrow 0;$ \\
+			\>\>\> $cout \leftarrow cout - cd[i][x_{i}];$ \\
+			\>\>\> $duree \leftarrow duree - x_{i};	$ \\
+			\>\> \textbf{fsi}; \\
+			\> \textbf{fait}; \\
+			\textbf{fin};
 
 			\end{tabbing}
 
 			\noindent
-			Appel : $ordonnancement\_simple(1)$;
+			Appel : $cout\_opt \leftarrow c_{max};$ $ordonnancement\_simple(1)$;
 
 		\subsubsection{Avec élagage}
 
