@@ -56,47 +56,53 @@
 
 	\subsection{Analyse}
 
-	\paragraph{} \noindent
-	Solution : un candidat est un vecteur de taille n où chaque coefficient est une durée choisie parmi l'ensemble \{1,...,k\} (à chaque tâche on associe une durée).
-	On choisit d'enregistrer les choix réalisés dans un tableau T de taille n.
+		\paragraph{} \noindent
+		Solution : un candidat est un vecteur de taille n où chaque coefficient est une durée choisie parmi l'ensemble \{1,...,k\} (à chaque tâche on associe une durée).
+		On choisit d'enregistrer les choix réalisés dans un tableau T de taille n.
 
-	\paragraph{}\noindent
-	$S_{i}$ : l'ensemble des durées possibles de 1 à k
+		\paragraph{}\noindent
+		$S_{i}$ : l'ensemble des durées possibles de 1 à k
 
-	\paragraph{}\noindent
-	$satisfaisant(x_{i}) = \sum_{j=1}^{i} x_{j} \le D$
+		\paragraph{}\noindent
+		$satisfaisant(x_{i}) = \sum_{j=1}^{i} x_{j} \le D$
 
-	(la somme partielle des durées choisies est inférieure à la durée maximale autorisée)
+		(la somme partielle des durées choisies est inférieure à la durée maximale autorisée)
 
-	\paragraph{}\noindent
-	$enregistrer(x_{i}) = T[i] \leftarrow x_{i}$
+		\paragraph{}\noindent
+		$enregistrer(x_{i}) = T[i] \leftarrow x_{i}$
 
-	\paragraph{}\noindent
-	\emph{soltrouvee} : $i = n$
+		\paragraph{}\noindent
+		\emph{soltrouvee} : $i = n$
 
-	\paragraph{}\noindent
-	$defaire(x_{i}) = T[i] \leftarrow 0$
+		\paragraph{}\noindent
+		$defaire(x_{i}) = T[i] \leftarrow 0$
 
-	\paragraph{}
-	Pour simplifier les vérifications au niveau de satisfaisant et des conditions d'élagage, on utilisera les variables entières \emph{cout} et \emph{duree} initialisée à 0,
-	qui représenteront le cout courant et la durée courante duent à nos choix de durées.
-	Elles seront mises à jour dans \emph{enregistrer} et dans \emph{défaire}.
-	En effet, en notant \emph{CD} le tableau à deux dimensions ayant les coûts en ligne et les durées en colonne, on effectura dans \emph{enregistrer} :
+		\paragraph{}
+		Pour simplifier les vérifications au niveau de satisfaisant et des conditions d'élagage, on utilisera les variables entières \emph{cout} et \emph{duree} initialisée à 0,
+		qui représenteront le cout courant et la durée courante duent à nos choix de durées.
+		Elles seront mises à jour dans \emph{enregistrer} et dans \emph{défaire}.
+		En effet, en notant \emph{CD} le tableau à deux dimensions ayant les coûts en ligne et les durées en colonne, on effectura dans \emph{enregistrer} :
 
-		\begin{eqnarray*}
-			\mbox{coût}  & \leftarrow & \mbox{coût} + CD[i][x_{i}] \\
-			\mbox{durée} & \leftarrow & \mbox{durée} + x_{i}
-		\end{eqnarray*}
+			\begin{eqnarray*}
+				\mbox{coût}  & \leftarrow & \mbox{coût} + CD[i][x_{i}] \\
+				\mbox{durée} & \leftarrow & \mbox{durée} + x_{i}
+			\end{eqnarray*}
 
-	Ensuite on effectura dans \emph{défaire} :
+		Ensuite on effectura dans \emph{défaire} :
 
-		\begin{eqnarray*}
-			\mbox{coût}  & \leftarrow & \mbox{coût} - CD[i][x_{i}] \\
-			\mbox{durée} & \leftarrow & \mbox{durée} - x_{i}
-		\end{eqnarray*}
+			\begin{eqnarray*}
+				\mbox{coût}  & \leftarrow & \mbox{coût} - CD[i][x_{i}] \\
+				\mbox{durée} & \leftarrow & \mbox{durée} - x_{i}
+			\end{eqnarray*}
+
+	\subsection{Condition d'élagage}
+
 
 	\subsection{Algorithme}
 
+		\subsubsection{Sans élagage}
+
+\begin{tabbing}
 Procédure $ordonnancement_simple(ent i)$;
 var ent k, $x_{i}$, D;
 début
@@ -119,7 +125,34 @@ début
 		fsi;
 	fait;
 fin;
+\end{tabbing}
 
 Appel : $ordonnancement_simple(1)$;
+
+		\subsubsection{Avec élagage}
+
+	\subsection{Complexité temporelle}
+
+	\subsection{Expérimentations}
+
+\section{Programmation dynamique}
+
+	\subsection{Formule de récurrence}
+	\subsection{Structure tabulaire}
+	\subsection{Algorithme}
+	\subsection{Complexité temporelle}
+	\subsection{Complexité spatiale}
+
+\section{Question complémentaires}
+\begin{enumerate}
+\item
+\item
+\item
+\item
+\item
+\end{enumerate}
+
+\section{Conclusion}
+
 
 \end{document}
