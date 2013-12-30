@@ -53,7 +53,10 @@
 
 	\subsection{Analyse}
 
-		\paragraph{} \noindent
+		On commence par définir les différents éléments qui interviennent dans le cadre de la méthode des essais successifs.
+		En particulier, il s'agit de définir ce qu'est un vecteur représentant un candidat (solution) et quels sont les constituant de l'algorithme générique ($S_{i}, satisfaisant, enregistrer, soltrouvee, defaire$).
+
+		\paragraph{}\noindent
 		Solution : un candidat est un vecteur de taille n où chaque coefficient est une durée choisie parmi l'ensemble \{1,...,k\} (à chaque tâche on associe une durée).
 		On choisit d'enregistrer les choix réalisés dans un tableau T de taille n.
 
@@ -69,7 +72,7 @@
 		$enregistrer(x_{i}) = T[i] \leftarrow x_{i}$
 
 		\paragraph{}\noindent
-		\emph{soltrouvee} : $i = n$
+		\emph{soltrouvée} : $i = n$
 
 		\paragraph{}\noindent
 		$defaire(x_{i}) = T[i] \leftarrow 0$
@@ -141,7 +144,8 @@
 			\end{tabbing}
 
 			\noindent
-			Appel : $cout\_opt \leftarrow c_{max};$ $ordonnancement\_simple(1)$;
+			Appel :\\
+			$cout\_opt \leftarrow c_{max};$ $ordonnancement\_simple(1)$;
 
 		\subsubsection{Avec élagage}
 
@@ -157,7 +161,7 @@
 	\subsection{Complexité temporelle}
 	\subsection{Complexité spatiale}
 
-\section{Question complémentaires}
+\section{Questions complémentaires}
 \begin{enumerate}
 \item
 \item
