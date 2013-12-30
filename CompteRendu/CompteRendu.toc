@@ -8,8 +8,8 @@
 \contentsline {paragraph}{}{2}
 \contentsline {paragraph}{}{2}
 \contentsline {paragraph}{}{2}
-\contentsline {paragraph}{}{2}
-\contentsline {paragraph}{}{2}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
 \contentsline {subsection}{\numberline {3.2}Condition d'\IeC {\'e}lagage}{3}
 \contentsline {subsection}{\numberline {3.3}Algorithme}{3}
 \contentsline {subsubsection}{\numberline {3.3.1}Sans \IeC {\'e}lagage}{3}
@@ -22,5 +22,5 @@
 \contentsline {subsection}{\numberline {4.3}Algorithme}{4}
 \contentsline {subsection}{\numberline {4.4}Complexit\IeC {\'e} temporelle}{4}
 \contentsline {subsection}{\numberline {4.5}Complexit\IeC {\'e} spatiale}{4}
-\contentsline {section}{\numberline {5}Question compl\IeC {\'e}mentaires}{4}
+\contentsline {section}{\numberline {5}Compl\IeC {\'e}ments}{4}
 \contentsline {section}{\numberline {6}Conclusion}{4}

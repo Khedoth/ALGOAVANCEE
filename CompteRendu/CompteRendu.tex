@@ -39,13 +39,31 @@
 
 \begin{enumerate}
 \item
-	\begin{eqnarray*}
-	d_{max} & \Rightarrow & c_{min} \\
-	\sum_{i=1}^{k} d_{max} & \Rightarrow & \sum_{i=1}^{n} c_{min} \\
-	D & \Rightarrow & C_{opt}
-	\end{eqnarray*}
+	On cherche tout d'abord à montrer que la solution optimale recherchée est trouvée pour $\sum_{i=1}^{n} d_i = D$.
+
+	Premièrement, il est important de remarquer qu'on a nécessairement $\sum_{i=1}^{n} d_i \le D$ car D est la durée globale maximale.
+	Or, si on considère une solution S telle que $\sum_{i=1}^{n} d_i < D$, alors il existe au moins un $d_i$ qui ne soit pas maximal par rapport aux durées satisfaisantes pour la tâche $T_i$.
+	Il existe donc une solution S' telle que $\sum_{i=1}^{n} d'_i \le D$ et $\sum_{i=1}^{n} d'_i > \sum_{i=1}^{n} d_i$.
+	Comme le coût diminue lorsque la durée augmente, S' est donc une meilleure solution que S.
+	S n'est donc pas optimale.
+
+	On en déduit que la solution optimale recherchée est trouvée pour $\sum_{i=1}^{n} d_i = D$.
+
 \item
-	complexité = $k^{n}$ (On peut faire un arbre pour le démontrer)
+	Ensuite, on s'intéresse à la complexité au pire d'une solution de type essais successifs en termes de nombre de candidats à examiner.
+
+	La complexité au pire correspond à considérer toutes les combinaisons différentes possibles.
+	Il s'agit donc de dénombrer le nombre N de candidats.
+
+	Construire une solution consiste à choisir une durée pour $T_1$ parmi les k durées possibles, puis une durée pour $T_2$, et ainsi de suite jusq'à $T_n$.
+	On a donc :
+
+	\begin{eqnarray*}
+		N & = & \underbrace{k \times k \times ... \times k}_{n fois} \\
+		N & = & k^n
+	\end{eqnarray*}
+
+	La complexité recherchée vaut donc $k^{n}$.
 
 \end{enumerate}
 
@@ -161,7 +179,7 @@
 	\subsection{Complexité temporelle}
 	\subsection{Complexité spatiale}
 
-\section{Questions complémentaires}
+\section{Compléments}
 \begin{enumerate}
 \item
 \item
