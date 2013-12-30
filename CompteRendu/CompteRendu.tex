@@ -102,32 +102,36 @@
 
 		\subsubsection{Sans élagage}
 
-\begin{tabbing}
-Procédure $ordonnancement_simple(ent i)$;
-var ent k, $x_{i}$, D;
-début
-	$S_{i} = [1..k];$
-	pour $x_{i}$ de 1 à k faire
-		si $\sum_{1}^{i} x_{l} <= D$ alors
-			$T[i] <- x_{i};$
-			$cout <- cout + cd[i][x_{i}];$
-			$duree <- duree + x_{i};$
+			\begin{tabbing}
 
-			si i = n alors $Affiche_sol()$;
-			sinon
-				$ordonnancement_simple(i+1)$;
-			fsi;
+			\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
 
-		T[i] <- 0;
-		$cout <- cout - cd[i][x_{i}];$
-		$duree <- duree - x_{i};	$
+			Procédure $ordonnancement\_simple(ent i)$; \\
+			var ent k, $x_{i}$, D; \\
+			début \\
+				\> $S_{i} = [1..k];$ \\
+				\> pour $x_{i}$ de 1 à k faire
+					\>\> si $\sum_{1}^{i} x_{l} <= D$ alors
+						\>\>\> $T[i] <- x_{i};$
+						\>\>\> $cout <- cout + cd[i][x_{i}];$
+						\>\>\> $duree <- duree + x_{i};$
 
-		fsi;
-	fait;
-fin;
-\end{tabbing}
+						\>\>\> si i = n alors $Affiche\_sol()$;
+						\>\>\> sinon
+							\>\>\> $ordonnancement\_simple(i+1)$;
+						\>\>\> fsi;
 
-Appel : $ordonnancement_simple(1)$;
+						\>\>\> T[i] <- 0;
+						\>\>\> $cout <- cout - cd[i][x_{i}];$
+						\>\>\> $duree <- duree - x_{i};	$
+					\>\> fsi;
+				\> fait;
+			fin;
+
+			\end{tabbing}
+
+			\noindent
+			Appel : $ordonnancement\_simple(1)$;
 
 		\subsubsection{Avec élagage}
 
