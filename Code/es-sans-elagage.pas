@@ -10,7 +10,7 @@ const
 {declaration des variables globales}
 var
 	cd : array [1..n, 1..k] of integer;
-	coutOpt : integer;
+	cout, duree, coutOpt : integer;
 	T : array [1..n] of integer;
 	j : integer;
 
@@ -30,24 +30,22 @@ end;
 procedure ordonnancementSimple (i : integer);
 var
 	xi : integer;
-	cout,duree : integer;
 begin
-	for xi := 1 to k do
+	for xi := 1 to k do {pour xi parcourant Si}
 	begin
-		{fix me}
-		if i = 1 then begin
-			cout := 0;
-			duree := 0;
-			writeln('cout = ',cout, ' duree = ',duree);
-		end;
-		duree := duree + xi;
-		cout := cout + cd[i,xi];
-		writeln('cd[',i,',',xi,'] = ',cd[i,xi]);
-		writeln('cout = ',cout);
-		if duree <= D then begin
+		if duree+xi <= D then begin {si satisfaisant}
+		
+			{enregistrer}
+			duree := duree + xi;
+			cout := cout + cd[i,xi];
 			T[i] := xi;
-			if i = n then begin
-				if cout <= coutOpt then begin
+			
+			if i = n then begin {si soltrouvee}
+				if cout < coutOpt then begin {si meilleure}
+				
+					coutOpt := cout; {majvalopt}
+					
+					{afficher la solution}
 					afficherTableau (T, n);
 					write('duree = ',duree, ' cout = ',cout);
 					writeln; writeln;
@@ -55,10 +53,12 @@ begin
 			end
 			else
 				ordonnancementSimple (i+1);
+			
+			{defaire}
+			T[i] := 0;
+			cout := cout - cd[i,xi];
+			duree := duree - xi;
 		end;
-		T[i] := 0;
-		cout := cout - cd[i,xi];
-		duree := duree - xi;
 	end;
 end;
 
@@ -108,6 +108,7 @@ begin
 	writeln;
 
 	{appel}
-	coutOpt := 210;
+	coutOpt := 1210;
+	cout := 0; duree:=0;
 	ordonnancementSimple (1);
 end.
