@@ -2,14 +2,11 @@
 
 \usepackage[utf8]{inputenc} % accents
 \usepackage[T1]{fontenc}      % caractères français
-\usepackage{geometry}         % marges
+\usepackage[margin=1in]{geometry}         % marges
 \usepackage[francais]{babel}  % langue
 \usepackage{graphicx,subfigure}         % images
 \usepackage{verbatim}         % texte préformaté
 \usepackage{float}
-
-
-
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -42,13 +39,31 @@
 
 \begin{enumerate}
 \item
-	\begin{eqnarray*}
-	d_{max} & \Rightarrow & c_{min} \\
-	\sum_{i=1}^{k} d_{max} & \Rightarrow & \sum_{i=1}^{n} c_{min} \\
-	D & \Rightarrow & C_{opt}
-	\end{eqnarray*}
+	On cherche tout d'abord à montrer que la solution optimale recherchée est trouvée pour $\sum_{i=1}^{n} d_i = D$.
+
+	Premièrement, il est important de remarquer qu'on a nécessairement $\sum_{i=1}^{n} d_i \le D$ car D est la durée globale maximale.
+	Or, si on considère une solution S telle que $\sum_{i=1}^{n} d_i < D$, alors il existe au moins un $d_i$ qui ne soit pas maximal par rapport aux durées satisfaisantes pour la tâche $T_i$.
+	Il existe donc une solution S' telle que $\sum_{i=1}^{n} d'_i \le D$ et $\sum_{i=1}^{n} d'_i > \sum_{i=1}^{n} d_i$.
+	Comme le coût diminue lorsque la durée augmente, S' est donc une meilleure solution que S.
+	S n'est donc pas optimale.
+
+	On en déduit que la solution optimale recherchée est trouvée pour $\sum_{i=1}^{n} d_i = D$.
+
 \item
-	complexité = $k^{n}$ (On peut faire un arbre pour le démontrer)
+	Ensuite, on s'intéresse à la complexité au pire d'une solution de type essais successifs en termes de nombre de candidats à examiner.
+
+	La complexité au pire correspond à considérer toutes les combinaisons différentes possibles.
+	Il s'agit donc de dénombrer le nombre N de candidats.
+
+	Construire une solution consiste à choisir une durée pour $T_1$ parmi les k durées possibles, puis une durée pour $T_2$, et ainsi de suite jusq'à $T_n$.
+	On a donc :
+
+	\begin{eqnarray*}
+		N & = & \underbrace{k \times k \times ... \times k}_{n fois} \\
+		N & = & k^n
+	\end{eqnarray*}
+
+	La complexité recherchée vaut donc $k^{n}$.
 
 \end{enumerate}
 
@@ -56,70 +71,124 @@
 
 	\subsection{Analyse}
 
-	\paragraph{} \noindent
-	Solution : un candidat est un vecteur de taille n où chaque coefficient est une durée choisie parmi l'ensemble \{1,...,k\} (à chaque tâche on associe une durée).
-	On choisit d'enregistrer les choix réalisés dans un tableau T de taille n.
+		On commence par définir les différents éléments qui interviennent dans le cadre de la méthode des essais successifs.
+		En particulier, il s'agit de définir ce qu'est un vecteur représentant un candidat (solution) et quels sont les constituant de l'algorithme générique ($S_{i}, satisfaisant, enregistrer, soltrouvee, defaire$).
 
-	\paragraph{}\noindent
-	$S_{i}$ : l'ensemble des durées possibles de 1 à k
+		\paragraph{}\noindent
+		Solution : un candidat est un vecteur de taille n où chaque coefficient est une durée choisie parmi l'ensemble \{1,...,k\} (à chaque tâche on associe une durée).
+		On choisit d'enregistrer les choix réalisés dans un tableau T de taille n.
 
-	\paragraph{}\noindent
-	$satisfaisant(x_{i}) = \sum_{j=1}^{i} x_{j} \le D$
+		\paragraph{}\noindent
+		$S_{i}$ : l'ensemble des durées possibles de 1 à k
 
-	(la somme partielle des durées choisies est inférieure à la durée maximale autorisée)
+		\paragraph{}\noindent
+		$satisfaisant(x_{i}) = \sum_{j=1}^{i} x_{j} \le D$
 
-	\paragraph{}\noindent
-	$enregistrer(x_{i}) = T[i] \leftarrow x_{i}$
+		(la somme partielle des durées choisies est inférieure à la durée maximale autorisée)
 
-	\paragraph{}\noindent
-	\emph{soltrouvee} : $i = n$
+		\paragraph{}\noindent
+		$enregistrer(x_{i}) = T[i] \leftarrow x_{i}$
 
-	\paragraph{}\noindent
-	$defaire(x_{i}) = T[i] \leftarrow 0$
+		\paragraph{}\noindent
+		\emph{soltrouvée} : $i = n$
 
-	\paragraph{}
-	Pour simplifier les vérifications au niveau de satisfaisant et des conditions d'élagage, on utilisera les variables entières \emph{cout} et \emph{duree} initialisée à 0,
-	qui représenteront le cout courant et la durée courante duent à nos choix de durées.
-	Elles seront mises à jour dans \emph{enregistrer} et dans \emph{défaire}.
-	En effet, en notant \emph{CD} le tableau à deux dimensions ayant les coûts en ligne et les durées en colonne, on effectura dans \emph{enregistrer} :
+		\paragraph{}\noindent
+		$defaire(x_{i}) = T[i] \leftarrow 0$
 
-		\begin{eqnarray*}
-			\mbox{coût}  & \leftarrow & \mbox{coût} + CD[i][x_{i}] \\
-			\mbox{durée} & \leftarrow & \mbox{durée} + x_{i}
-		\end{eqnarray*}
+		\paragraph{}
+		Pour simplifier les vérifications au niveau de satisfaisant et des conditions d'élagage, on utilisera les variables entières \emph{cout} et \emph{duree} initialisée à 0,
+		qui représenteront le cout courant et la durée courante duent à nos choix de durées.
+		Elles seront mises à jour dans \emph{enregistrer} et dans \emph{défaire}.
+		En effet, en notant \emph{CD} le tableau à deux dimensions ayant les coûts en ligne et les durées en colonne, on effectura dans \emph{enregistrer} :
 
-	Ensuite on effectura dans \emph{défaire} :
+			\begin{eqnarray*}
+				\mbox{coût}  & \leftarrow & \mbox{coût} + CD[i][x_{i}] \\
+				\mbox{durée} & \leftarrow & \mbox{durée} + x_{i}
+			\end{eqnarray*}
 
-		\begin{eqnarray*}
-			\mbox{coût}  & \leftarrow & \mbox{coût} - CD[i][x_{i}] \\
-			\mbox{durée} & \leftarrow & \mbox{durée} - x_{i}
-		\end{eqnarray*}
+		Ensuite on effectura dans \emph{défaire} :
+
+			\begin{eqnarray*}
+				\mbox{coût}  & \leftarrow & \mbox{coût} - CD[i][x_{i}] \\
+				\mbox{durée} & \leftarrow & \mbox{durée} - x_{i}
+			\end{eqnarray*}
+
+	\subsection{Condition d'élagage}
+
 
 	\subsection{Algorithme}
 
-Procédure $ordonnancement_simple(ent i)$;
-var ent k, $x_{i}$, D;
-début
-	$S_{i} = [1..k];$
-	pour $x_{i}$ de 1 à k faire
-		si $\sum_{1}^{i} x_{l} <= D$ alors
-			$T[i] <- x_{i};$
-			$cout <- cout + cd[i][x_{i}];$
-			$duree <- duree + x_{i};$
+		\subsubsection{Sans élagage}
 
-			si i = n alors $Affiche_sol()$;
-			sinon
-				$ordonnancement_simple(i+1)$;
-			fsi;
+			Cet algorithme repose sur le modèle de programmation de recherche d'une solution optimale par essais successifs.
+			Le principe est d'essayer toutes les combinaisons possibles tant qu'elles sont satisfaisantes, c'est-à-dire dans notre cas que la somme partielle des durées choisies est inférieure à la durée maximale autorisée D.
+			Pour obtenir la solution optimale, on vérifie que le coût d'une solution obtenue est strictement inférieur au coût de la meilleure solution trouvée, auquel cas on l'affiche.
+			La dernière solution affichée sera donc la solution optimale.
 
-		T[i] <- 0;
-		$cout <- cout - cd[i][x_{i}];$
-		$duree <- duree - x_{i};	$
+			L'appel de l'algorithme consiste à initialiser le coût optimal au coût maximal qu'il est possible d'obtenir, puis à appeler la procédure au rang 1, c'est-à-dire commencer par choisir la durée de la première tâche $T_{1}$.
 
-		fsi;
-	fait;
-fin;
+			\begin{tabbing}
 
-Appel : $ordonnancement_simple(1)$;
+			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
+
+			\textbf{procédure} $ordonnancement\_simple$ (ent i); \\
+			\textbf{var} ent n, k, $x_{i}$, D; \\
+			\textbf{var} ent cout, duree; \\
+			\textbf{début} \\
+			\> $cout \leftarrow 0;$ \\
+			\> $duree \leftarrow 0;$ \\
+			\> \textbf{pour} $x_{i}$ \textbf{de} 1 \textbf{à} k \textbf{faire} \\
+			\>\> \textbf{si} $duree\le D$ \textbf{alors} \\
+			\>\>\> $T[i] \leftarrow x_{i};$ \\
+			\>\>\> $cout \leftarrow cout + cd[i][x_{i}];$ \\
+			\>\>\> $duree \leftarrow duree + x_{i};$ \\
+
+			\>\>\> \textbf{si} i = n \textbf{alors} \\
+			\>\>\>\> \textbf{si} $cout < cout\_opt$ \textbf{alors} \\
+			\>\>\>\>\> $affiche(T)$; \\
+			\>\>\>\> \textbf{fsi}; \\
+
+			\>\>\> \textbf{sinon} \\
+			\>\>\>\> $ordonnancement\_simple(i+1)$; \\
+			\>\>\> \textbf{fsi}; \\
+
+			\>\>\> $T[i] \leftarrow 0;$ \\
+			\>\>\> $cout \leftarrow cout - cd[i][x_{i}];$ \\
+			\>\>\> $duree \leftarrow duree - x_{i};	$ \\
+			\>\> \textbf{fsi}; \\
+			\> \textbf{fait}; \\
+			\textbf{fin};
+
+			\end{tabbing}
+
+			\noindent
+			Appel :\\
+			$cout\_opt \leftarrow c_{max};$ $ordonnancement\_simple(1)$;
+
+		\subsubsection{Avec élagage}
+
+	\subsection{Complexité temporelle}
+
+	\subsection{Expérimentations}
+
+\section{Programmation dynamique}
+
+	\subsection{Formule de récurrence}
+	\subsection{Structure tabulaire}
+	\subsection{Algorithme}
+	\subsection{Complexité temporelle}
+	\subsection{Complexité spatiale}
+
+\section{Compléments}
+\begin{enumerate}
+\item
+\item
+\item
+\item
+\item
+\end{enumerate}
+
+\section{Conclusion}
+
 
 \end{document}
