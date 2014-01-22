@@ -34,17 +34,17 @@ begin
 	for xi := 1 to k do {pour xi parcourant Si}
 	begin
 		if duree+xi <= D then begin {si satisfaisant}
-		
+
 			{enregistrer}
 			duree := duree + xi;
 			cout := cout + cd[i,xi];
 			T[i] := xi;
-			
+
 			if i = n then begin {si soltrouvee}
 				if cout < coutOpt then begin {si meilleure}
-				
+
 					coutOpt := cout; {majvalopt}
-					
+
 					{afficher la solution}
 					afficherTableau (T, n);
 					write('duree = ',duree, ' cout = ',cout);
@@ -53,7 +53,7 @@ begin
 			end
 			else
 				ordonnancementSimple (i+1);
-			
+
 			{defaire}
 			T[i] := 0;
 			cout := cout - cd[i,xi];
@@ -108,7 +108,7 @@ begin
 	writeln;
 
 	{appel}
-	coutOpt := 1210;
+	coutOpt := infini;
 	cout := 0; duree:=0;
 	ordonnancementSimple (1);
 end.

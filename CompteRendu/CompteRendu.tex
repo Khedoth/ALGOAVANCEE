@@ -1,6 +1,6 @@
 \documentclass[a4paper, titlepage]{article}
 
-\usepackage[utf8]{inputenc} % accents
+\usepackage[utf8x]{inputenc} % accents
 \usepackage[T1]{fontenc}      % caractères français
 \usepackage[margin=1in]{geometry}         % marges
 \usepackage[francais]{babel}  % langue
@@ -97,7 +97,7 @@
 
 		\paragraph{}
 		Pour simplifier les vérifications au niveau de satisfaisant et des conditions d'élagage, on utilisera les variables entières \emph{cout} et \emph{duree} initialisée à 0,
-		qui représenteront le cout courant et la durée courante duent à nos choix de durées.
+		qui représenteront le coût courant et la durée courante duent à nos choix de durées.
 		Elles seront mises à jour dans \emph{enregistrer} et dans \emph{défaire}.
 		En effet, en notant \emph{CD} le tableau à deux dimensions ayant les coûts en ligne et les durées en colonne, on effectura dans \emph{enregistrer} :
 
@@ -113,7 +113,13 @@
 				\mbox{durée} & \leftarrow & \mbox{durée} - x_{i}
 			\end{eqnarray*}
 
+
 	\subsection{Condition d'élagage}
+	On a montré dans les préliminaires que la solution optimale recherchée est trouvée pour $\sum_{i=1}^{n} d_i = D$.
+	Cela va nous servir de base pour notre condition d'élagage.
+	En effet, on va élaguer si on ne peut pas atteindre D avec les durées restantes à choisir.
+	Autrement dit, en notant $S_1$ la somme des durées choisies et $S_2$ la somme des durées maximales restantes, on élaguera si $S_1 + S_2 < D$.
+	Cependant, lorsque D est grand (i.e. qu'il est impossible de l'atteindre, même en choisissant toutes les durée maximales), il ne faudra pas élaguer.
 
 
 	\subsection{Algorithme}
@@ -125,7 +131,8 @@
 			Pour obtenir la solution optimale, on vérifie que le coût d'une solution obtenue est strictement inférieur au coût de la meilleure solution trouvée, auquel cas on l'affiche.
 			La dernière solution affichée sera donc la solution optimale.
 
-			L'appel de l'algorithme consiste à initialiser le coût optimal au coût maximal qu'il est possible d'obtenir, puis à appeler la procédure au rang 1, c'est-à-dire commencer par choisir la durée de la première tâche $T_{1}$.
+			L'appel de l'algorithme consiste à initialiser le coût optimal à une très grande valeur, puis à appeler la procédure au rang 1, c'est-à-dire commencer par choisir la durée de la première tâche $T_{1}$.
+			On initialisera également les variables \emph{cout} et \emph{duree} à 0.
 
 			\begin{tabbing}
 
@@ -135,16 +142,15 @@
 			\textbf{var} ent n, k, $x_{i}$, D; \\
 			\textbf{var} ent cout, duree; \\
 			\textbf{début} \\
-			\> $cout \leftarrow 0;$ \\
-			\> $duree \leftarrow 0;$ \\
 			\> \textbf{pour} $x_{i}$ \textbf{de} 1 \textbf{à} k \textbf{faire} \\
-			\>\> \textbf{si} $duree\le D$ \textbf{alors} \\
-			\>\>\> $T[i] \leftarrow x_{i};$ \\
-			\>\>\> $cout \leftarrow cout + cd[i][x_{i}];$ \\
+			\>\> \textbf{si} $duree+x_{i}\le D$ \textbf{alors} \\
 			\>\>\> $duree \leftarrow duree + x_{i};$ \\
+			\>\>\> $cout \leftarrow cout + cd[i][x_{i}];$ \\
+			\>\>\> $T[i] \leftarrow x_{i};$ \\
 
 			\>\>\> \textbf{si} i = n \textbf{alors} \\
 			\>\>\>\> \textbf{si} $cout < cout\_opt$ \textbf{alors} \\
+			\>\>\>\>\> $cout\_opt \leftarrow cout$; \\
 			\>\>\>\>\> $affiche(T)$; \\
 			\>\>\>\> \textbf{fsi}; \\
 
@@ -163,9 +169,64 @@
 
 			\noindent
 			Appel :\\
+			$coutOpt \leftarrow \infty;$ \\
+			$cout \leftarrow 0;$ \\
+			$duree \leftarrow 0;$ \\
 			$cout\_opt \leftarrow c_{max};$ $ordonnancement\_simple(1)$;
 
 		\subsubsection{Avec élagage}
+
+			Pour réaliser l'algorithme avec élagage, on dispose d'une fonction \emph{encorepossible(duree)} qui prend en argument la somme des durées déjà choisies et retourne un booléen :
+			\emph{vrai} si on peut encore espérer trouver une solution optimale, \emph{faux} s'il est nécessaire d'élaguer.
+			En partant de l'algorithme précédent, on insère l'appel de cette fonction autour de l'appel à \emph{ordonnancement\_simple} pour le rang suivant.
+			On obtient alors l'algorithme :
+
+			\begin{tabbing}
+
+			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
+
+			\textbf{procédure} $ordonnancement\_simple$ (ent i); \\
+			\textbf{var} ent n, k, $x_{i}$, D; \\
+			\textbf{var} ent cout, duree; \\
+			\textbf{début} \\
+			\> \textbf{pour} $x_{i}$ \textbf{de} 1 \textbf{à} k \textbf{faire} \\
+			\>\> \textbf{si} $duree+x_{i}\le D$ \textbf{alors} \\
+			\>\>\> $duree \leftarrow duree + x_{i};$ \\
+			\>\>\> $cout \leftarrow cout + cd[i][x_{i}];$ \\
+			\>\>\> $T[i] \leftarrow x_{i};$ \\
+
+			\>\>\> \textbf{si} i = n \textbf{alors} \\
+			\>\>\>\> \textbf{si} $cout < cout\_opt$ \textbf{alors} \\
+			\>\>\>\>\> $cout\_opt \leftarrow cout$; \\
+			\>\>\>\>\> $affiche(T)$; \\
+			\>\>\>\> \textbf{fsi}; \\
+
+			\>\>\> \textbf{sinon} \\
+			\>\>\>\> \textbf{si} $encorepossible (duree)$ \textbf{alors} \\
+			\>\>\>\>\> $ordonnancement\_simple(i+1)$; \\
+			\>\>\>\> \textbf{fsi}; \\
+			\>\>\> \textbf{fsi}; \\
+
+			\>\>\> $T[i] \leftarrow 0;$ \\
+			\>\>\> $cout \leftarrow cout - cd[i][x_{i}];$ \\
+			\>\>\> $duree \leftarrow duree - x_{i};	$ \\
+			\>\> \textbf{fsi}; \\
+			\> \textbf{fait}; \\
+			\textbf{fin};
+
+			\end{tabbing}
+
+			Le comportement de \emph{encorepossible} reprend le principe d'élagage énoncé dans la secton précédente :
+
+			\begin{tabbing}
+
+			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
+
+			\textbf{procédure} $encorepossible$ (ent duree); \\
+
+
+			\end{tabbing}
+
 
 	\subsection{Complexité temporelle}
 
