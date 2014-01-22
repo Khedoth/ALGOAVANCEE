@@ -172,8 +172,11 @@
 	\subsection{Expérimentations}
 
 \section{Programmation dynamique}
-
+	\paragraph{}
+		On cherche le coût associé à l'affectation optimale de \emph{d} unités de temps aux tâches consécutives $T_{1} à T_{j}$. Soit \emph{coût-opt(j, d)} la fonction réalisant cette association.
+		
 	\subsection{Formule de récurrence}
+		On s'appuie sur le \emph{principe d'optimalité de Bellman} : toute sous-solution d'une solution optimale est optimale. Ainsi, le coût de \emph{j} tâches auxquelles on accorde une durée totale \emph{d} de manière optimale est le minimum de la somme entre le coût de \emph{j-1} tâches auxquelles on accorde \emph{D-l} unités de temps, où \emph{l} parcourt l'ensemble des durées possibles pour la tâche \emph{j}, et le coût de la tâche \emph{j}.
 	\subsection{Structure tabulaire}
 	\subsection{Algorithme}
 	\subsection{Complexité temporelle}
