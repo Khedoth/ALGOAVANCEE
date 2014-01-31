@@ -7,28 +7,54 @@
 \usepackage{graphicx,subfigure}         % images
 \usepackage{verbatim}         % texte préformaté
 \usepackage{float}
+\usepackage{framed}	% texte encadré
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \usepackage{lastpage}
 
 \renewcommand\headrulewidth{1pt}
-\fancyhead[L]{Algorithmique avancée}
-\fancyhead[R]{ENSSAT}
+\fancyhead[L]{Algorithmique avancée -- Ordonnancement simple}
+\fancyhead[R]{\bsc{Enssat}}
 
 \renewcommand\footrulewidth{1pt}
 \fancyfoot[C]{\today}
-\fancyfoot[L]{VYTHELINGUM - NOKAYA}
+\fancyfoot[L]{\bsc{Vythelingum} -- \bsc{Vythelingum}}
 \fancyfoot[R]{\textbf{Page \thepage/\pageref{LastPage}}}
 
-\title{Mini-projet d'algorithmique avancée}      % renseigne le titre
-\author{Kévin VYTHELINGUM, Jean-Michel NOKAYA}           %   "   "   l'auteur
-\date{\today}           %   "   "   la future date de parution
+\title{Ordonnancement simple}
+\author{Kévin \bsc{Vythelingum}, Jean-Michel \bsc{Nokaya}}
+\date{\today}           % la future date de parution
 
 
 
 \begin{document}
-\maketitle
+\makeatletter
+  \begin{titlepage}
+  \centering
+  	{\large \textsc{École Nationale Supérieure des Sciences Appliquées et de Technologie}}\\
+	\textsc{Logiciel et Systèmes Informatiques - Deuxième année}\\
+  \vfill
+	\textbf{Algorithmique avancée}\\
+  \vspace{1cm}
+        {\LARGE \textbf{\@title}} \\
+  \vspace{2em}
+  {\large Kévin \bsc{Vythelingum}}\\
+  \vspace{0.5cm}
+  {\large Jean-Michel \bsc{Nokaya}} \\
+  \vspace{1cm}
+
+	\@date \\
+  \vfill
+	\includegraphics[height=0.07\textheight]{enssat.png}
+	\hfill
+	\begin{tabular}{l}
+		\large Chargé de cours :\\[0.2cm]
+		\large Olivier \bsc{Pivert} \\
+		\vspace{1cm}
+	\end{tabular}
+
+\end{titlepage}\makeatother
 \tableofcontents
 \newpage
 \large
@@ -121,8 +147,10 @@
 	Autrement dit, en notant $S_1$ la somme des durées choisies et $S_2$ la somme des durées maximales restantes, on élaguera si $S_1 + S_2 < D$.
 	Cependant, lorsque D est grand (i.e. qu'il est impossible de l'atteindre, même en choisissant toutes les durée maximales), il ne faudra pas élaguer.
 
+	L'intérêt de cette condition d'élagage est d'arrêter plus tôt la recherche d'une solution en prévoyant qu'elle ne pourra pas être optimale.
+	Nous vérifierons par des expérimentations que cette condition améliore effectivement la complexité temporelle en terme de nombre d'appels récursif.
 
-	\subsection{Algorithme}
+	\subsection{Algorithmes}
 
 		\subsubsection{Sans élagage}
 
@@ -139,8 +167,7 @@
 			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
 
 			\textbf{procédure} $ordonnancement\_simple$ (ent i); \\
-			\textbf{var} ent n, k, $x_{i}$, D; \\
-			\textbf{var} ent cout, duree; \\
+			\textbf{var} ent $x_{i}$; \\
 			\textbf{début} \\
 			\> \textbf{pour} $x_{i}$ \textbf{de} 1 \textbf{à} k \textbf{faire} \\
 			\>\> \textbf{si} $duree+x_{i}\le D$ \textbf{alors} \\
@@ -172,13 +199,13 @@
 			$coutOpt \leftarrow \infty;$ \\
 			$cout \leftarrow 0;$ \\
 			$duree \leftarrow 0;$ \\
-			$cout\_opt \leftarrow c_{max};$ $ordonnancement\_simple(1)$;
+			$ordonnancement\_simple(1)$;
 
 		\subsubsection{Avec élagage}
 
-			Pour réaliser l'algorithme avec élagage, on dispose d'une fonction \emph{encorepossible(duree)} qui prend en argument la somme des durées déjà choisies et retourne un booléen :
-			\emph{vrai} si on peut encore espérer trouver une solution optimale, \emph{faux} s'il est nécessaire d'élaguer.
-			En partant de l'algorithme précédent, on insère l'appel de cette fonction autour de l'appel à \emph{ordonnancement\_simple} pour le rang suivant.
+			Pour réaliser l'algorithme avec élagage, on dispose d'une fonction \emph{encorepossible(di,ci)} qui prend en argument la durée et le coût sélectionnés et retourne un booléen :
+			\texttt{vrai} si on peut encore espérer trouver une solution optimale, \texttt{faux} s'il est nécessaire d'élaguer.
+			En partant de l'algorithme précédent, effectue l'appel à \emph{ordonnancement\_simple} pour le rang suivant à condition que \emph{encorepossible} soit \texttt{vrai}.
 			On obtient alors l'algorithme :
 
 			\begin{tabbing}
@@ -186,8 +213,7 @@
 			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
 
 			\textbf{procédure} $ordonnancement\_simple$ (ent i); \\
-			\textbf{var} ent n, k, $x_{i}$, D; \\
-			\textbf{var} ent cout, duree; \\
+			\textbf{var} ent $x_{i}$; \\
 			\textbf{début} \\
 			\> \textbf{pour} $x_{i}$ \textbf{de} 1 \textbf{à} k \textbf{faire} \\
 			\>\> \textbf{si} $duree+x_{i}\le D$ \textbf{alors} \\
@@ -216,26 +242,124 @@
 
 			\end{tabbing}
 
-			Le comportement de \emph{encorepossible} reprend le principe d'élagage énoncé dans la secton précédente :
+			\noindent
+			Appel :\\
+			$coutOpt \leftarrow \infty;$ \\
+			$cout \leftarrow 0;$ \\
+			$duree \leftarrow 0;$ \\
+			$ordonnancement\_simple(1)$;
+
+			\paragraph{}
+			Le comportement de \emph{encorepossible} reprend le principe d'élagage énoncé dans la section précédente.
+			On suppose que l'on dispose d'un tableau \emph{dmax} de taille n qui est initialisé à la durée maximale qu'il est possible d'allouer à chaque tâche,
+			et d'une fonction \emph{sommeTableau(tableau,taille)} qui permet de calculer la somme des éléments d'un tableau d'entiers.
 
 			\begin{tabbing}
 
 			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
 
-			\textbf{procédure} $encorepossible$ (ent duree); \\
-
+			\textbf{fonction} $encorepossible$ (ent di, ent ci) : booléen; \\
+			\textbf{var} ent S; \\
+			\textbf{début} \\
+			\> \textbf{si} (S < D) \textbf{et} (ci = 1) \textbf{alors} \\
+			\>\> \textbf{retourner} \texttt{vrai}; \\
+			\> \textbf{sinon} \\
+			\>\> \textbf{si} $S-dmax[ci]+di < D$ \textbf{alors} \\
+			\>\>\> \textbf{retourner} \texttt{faux}; \\
+			\>\> \textbf{sinon} \\
+			\>\>\> $dmax[ci] \leftarrow di;$ \\
+			\>\>\> \textbf{retourner} \texttt{vrai}; \\
+			\textbf{fin}
 
 			\end{tabbing}
 
-
-	\subsection{Complexité temporelle}
-
 	\subsection{Expérimentations}
+
+	Pour tester la validité de nos algorithmes et mesurer leurs performances, nous affichons la solution optimale proposée ainsi que le nombre d'appels effectués à la procédure \emph{ordonnancement\_simple}.
+	Cela nous permettra de comparer les algorithmes avec et sans élagage.
+
+	Tout d'abord, nous avons testé l'exemple proposé par le sujet, c'est-à-dire avec $n=4$, $k=5$, $D=10$, et le tableau suivant :
+
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			cd	& 1	& 2	& 3	& 4	& 5 \\ \hline
+			$c_1$	& 110	& 90	& 65	& 55	& -- \\ \hline
+			$c_2$	& 120	& 90	& 70	& 50	& 40 \\ \hline
+			$c_3$	& 90	& 70	& 65	& 60	& -- \\ \hline
+			$c_4$	& 65	& 60	& 55	& --	& -- \\
+			\hline
+		\end{tabular}
+	\end{center}
+
+	Nous obtenons les résultats suivant pour les algorithmes sans et avec élagage :
+
+\begin{framed}
+\paragraph{Sans élagage\\}
+\begin{verbatim}
+3 4 2 1
+duree = 10 cout = 250
+
+Nombre d'appels : 121
+\end{verbatim}
+\end{framed}
+
+\begin{framed}
+\paragraph{Avec élagage\\}
+\begin{verbatim}
+3 4 2 1
+duree = 10 cout = 250
+
+Nombre d'appels : 99
+\end{verbatim}
+\end{framed}
+
+	\paragraph{}
+	Nous obtenons heureusement le même résultat avec les deux algorithmes, c'est-à-dire affecter respectivement les durées 3, 4, 2, 1 aux tâches $c_1$, $c_2$, $c_3$, $c_4$.
+	De plus, nous arrivons à faire 1.2 fois moins d'appels avec la condition d'élagage, ce qui montre son intérêt.
+
+	Nous effectuons ensuite des tests avec des jeux de données différents en vérifiant à chaque fois la cohérence des résultats obtenus.
+	Pour cela, nous avons conçu un programme \emph{es-experimentations} qui génère des tableaux \emph{cd} avec des valeurs aléatoires comprises entre 10 et 1000 ou $+\infty$ et les applique sur les deux algorithmes.
+	L'objectif est de comparer les performances des deux algorithmes.
+	Ainsi, nous avons recensé les nombres d'appels obtenus pour des valeurs de k et n différentes dans le tableau suivant.
+
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|r|r|}
+			\hline
+			Test	& n	& k	& D	& Nombre d'appels sans élagage & Nombre d'appels avec élagage \\
+			\hline
+			0 	& 4	& 5	& 10	& 121 	& 99 \\
+			\hline
+			1 	& 4	& 5	& 10 	& 121	& 113 \\
+			2 	& 4	& 5	& 10 	& 121	& 51 \\
+			3 	& 4	& 5	& 10 	& 121	& 101 \\
+			4 	& 4	& 5	& 10 	& 121	& 113 \\
+			5 	& 4	& 5	& 10 	& 121	& 117 \\
+			\hline
+			6 	& 10	& 5	& 30 	& 2 015 376 	& 274 900 \\
+			7 	& 10	& 5	& 30 	& 2 015 376 	& 809 160 \\
+			8 	& 10	& 5	& 30 	& 2 015 376 	& 275 006 \\
+			\hline
+			9 	& 10	& 10	& 30 	& 19 580 242 	& 8 151 656 \\
+			10 	& 10	& 10	& 30 	& 19 580 242 	& 10 869 695 \\
+			11 	& 10	& 10	& 30 	& 19 580 242 	& 372 187 \\
+			\hline
+			12 	& 10	& 20	& 30 	& 22 958 977 	& 394 759 \\
+			13 	& 10	& 30	& 30 	& 22 964 087 	& 369 466 \\
+			14 	& 10	& 50	& 30 	& 22 964 087 	& 369 246 \\
+			\hline
+			15 	& 10	& 100	& 30 	& 22 964 087 	& 931 513 \\
+			16 	& 10	& 5000 	& 30 	& 22 964 087 	& 368 336 \\
+
+			\hline
+		\end{tabular}
+	\end{center}
+
 
 \section{Programmation dynamique}
 	\paragraph{}
 		On cherche le coût associé à l'affectation optimale de \emph{d} unités de temps aux tâches consécutives $T_{1} à T_{j}$. Soit \emph{coût-opt(j, d)} la fonction réalisant cette association.
-		
+
 	\subsection{Formule de récurrence}
 		On s'appuie sur le \emph{principe d'optimalité de Bellman} : toute sous-solution d'une solution optimale est optimale. Ainsi, le coût de \emph{j} tâches auxquelles on accorde une durée totale \emph{d} de manière optimale est le minimum de la somme entre le coût de \emph{j-1} tâches auxquelles on accorde \emph{D-l} unités de temps, où \emph{l} parcourt l'ensemble des durées possibles pour la tâche \emph{j}, et le coût de la tâche \emph{j}.
 	\subsection{Structure tabulaire}
@@ -246,10 +370,22 @@
 \section{Compléments}
 \begin{enumerate}
 \item
+	Les algorithmes à essais successifs sont plus faciles à concevoir car ils suivent une trame fixe.
+	Il suffit de déterminer les constituants de l'algorithme générique.
+	En revanche, pour la méthode de programmation dynamique, il faut trouver une relation de récurrence qui n'est pas toujours évidente.
+	Il est vrai qu'une fois qu'on l'a déterminé il devient aisé de produire l'algorithme mais cette étape est souvent dynamique.
+	C'est pourquoi la méthode des essais successifs demande moins d'efforts de conception que la méthode de programmation dynamique qui est cependant plus efficace en terme de complexité temporelle.
 \item
 \item
+	D'après les résultats obtenus dans la phase d'expérimentation des algorithmes à essais successifs, on remarque qu'on peut aller en pratique jusqu'à une valeur $k = 5000$.
+	Il est important de noter que la version sans élagage atteint une asymptote.
+	De plus, le nombre d'appels ne dépend pas des valeurs du tableau \emph{cd} pour la version sans élagage, ce qui n'est pas le cas de la version avec élagage.
+	Cela peut s'expliquer par le rang des durées max possible qui varie selon les tirages aléatoires.
 \item
 \item
+	Les algorithmes de type "diviser pour régner" sont basés sur une équation de récurrence de même type que ceux utilisant la programmation dynamique.
+	Il est donc possible de résoudre le problème posé à l'aide d'une solution de type "diviser pour régner" en théorie.
+	Cependant, la complexité spatiale serait très importante à cause du très grand nombre d'appels récursifs.
 \end{enumerate}
 
 \section{Conclusion}

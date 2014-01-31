@@ -1,4 +1,4 @@
-program esSansElagage;
+program esAvecElagage;
 
 {declaration des constantes}
 const
@@ -10,6 +10,7 @@ const
 {declaration des variables globales}
 var
 	cd : array [1..n, 1..k] of integer; {tableau des couts et durees de depart}
+	dmax : array [1..n] of integer; {tableau des durees maximales pour chaque tache}
 
 	cout, duree, coutOpt : integer; {variables de calcul de la solution optimale}
 	T : array [1..n] of integer; {vecteur representant un candidat}
@@ -19,19 +20,57 @@ var
 	nbAppel : integer; {compte le nombre d'appels a ordonnancement simple}
 
 {procedure d'affichage d'un tableau}
-procedure afficherTableau (var tableau : array of integer; taille : integer);
+procedure afficherTableau(var tableau : array of integer; taille : integer);
 var
 	i : integer;
 begin
 	for i := 0 to taille-1 do
 	begin
-		write (' ', tableau[i]);
+		write(' ', tableau[i]);
 	end;
 	writeln;
 end;
 
-{procedure de recherche de la solution optimale sans elagage}
-procedure ordonnancementSimple (i : integer);
+{fonction de calcul de la somme des elements d'un tableau d'entiers}
+function sommeTableau(var tableau : array of integer; taille : integer) : integer;
+var
+	somme : integer; {somme courante}
+	i : integer;
+begin
+	somme := 0;
+	for i:=0 to taille-1 do
+	begin
+		somme := somme+tableau[i];
+	end;
+	sommeTableau := somme;
+end;
+
+{fonction de test pour elagage}
+function encorepossible(di : integer; ci : integer) : boolean;
+var
+	S : integer; {Somme des durees choisies + des durees max restantes}
+begin
+	S := sommeTableau(dmax,n);
+
+	{si D est grand, alors retourner vrai (il est impossible d'atteindre D)}
+	if (S < D) and (ci = 1) then begin
+		encorepossible := true;
+	end
+
+	{sinon on retourne vrai uniquement s'il est possible d'atteindre D avec les durees restantes}
+	else begin
+		if S-dmax[ci]+di < D then begin
+			encorepossible := false;
+		end
+		else begin
+			dmax[ci] := di;
+			encorepossible := true;
+		end;
+	end;
+end;
+
+{procedure de recherche de la solution optimale avec elagage}
+procedure ordonnancementSimple(i : integer);
 var
 	xi : integer;
 begin
@@ -50,14 +89,19 @@ begin
 					coutOpt := cout; {majvalopt}
 
 					{afficher la solution}
-					afficherTableau (T, n);
+					afficherTableau(T, n);
 					write('duree = ',duree, ' cout = ',cout);
 					writeln; writeln;
 				end;
 			end
 			else begin
-				ordonnancementSimple (i+1);
-				nbAppel := nbAppel+1;
+
+				{application de l'elagage}
+				if encorepossible(xi, i) then
+				begin
+					ordonnancementSimple(i+1);
+					nbAppel := nbAppel+1;
+				end;
 			end;
 
 			{defaire}
@@ -73,7 +117,7 @@ begin
 	{message de demarrage}
 	writeln('----------------------------------------------------------');
 	writeln('Ordonnancement simple par la méthode des essais successifs');
-	writeln('----------------- version sans elagage -------------------');
+	writeln('----------------- version avec elagage -------------------');
 	writeln('----------------------------------------------------------');
 	writeln;
 
@@ -102,6 +146,12 @@ begin
 	cd[4,4] := infini;
 	cd[4,5] := infini;
 
+	{initialisation tableau des durees maximales pour chaque tache}
+	dmax[1] := 4;
+	dmax[2] := 5;
+	dmax[3] := 4;
+	dmax[4] := 3;
+
 	{affichage des valeurs initiales}
 	writeln('Tableau des couts et durees :'); writeln;
 	for j := 1 to n do
@@ -111,6 +161,7 @@ begin
 	writeln;
 	writeln(' n = ', n);
 	writeln(' k = ', k);
+	writeln(' D = ', D);
 	writeln;
 
 	{appel}
