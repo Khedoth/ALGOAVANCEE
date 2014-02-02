@@ -19,7 +19,7 @@
 
 \renewcommand\footrulewidth{1pt}
 \fancyfoot[C]{\today}
-\fancyfoot[L]{\bsc{Vythelingum} -- \bsc{Vythelingum}}
+\fancyfoot[L]{\bsc{Nokaya} -- \bsc{Vythelingum}}
 \fancyfoot[R]{\textbf{Page \thepage/\pageref{LastPage}}}
 
 \title{Ordonnancement simple}
@@ -60,6 +60,11 @@
 \large
 
 \section{Introduction}
+
+Ce projet consiste à examiner deux manières différentes pour résoudre le même problème afin de comparer leurs complexités.
+Ainsi, nous nous intéressons à un problème d'ordonnancement simple, où différentes tâches peuvent être exécutées avec des durées différentes, moyennant un coût plus important pour une durée plus courte.
+Il s'agit de déterminer le meilleur ordonnancement pour avoir un coût minimal en s'étant fixé une durée maximale d'exécution.
+Pour cela, nous réaliserons un premier algorithme suivant la méthode des essais successifs, puis nous élaborerons un algorithme de programmation dynamique.
 
 \section{Préliminaires}
 
@@ -145,10 +150,10 @@
 	Cela va nous servir de base pour notre condition d'élagage.
 	En effet, on va élaguer si on ne peut pas atteindre D avec les durées restantes à choisir.
 	Autrement dit, en notant $S_1$ la somme des durées choisies et $S_2$ la somme des durées maximales restantes, on élaguera si $S_1 + S_2 < D$.
-	Cependant, lorsque D est grand (i.e. qu'il est impossible de l'atteindre, même en choisissant toutes les durée maximales), il ne faudra pas élaguer.
+	Cependant, lorsque D est grand (i.e. qu'il est impossible de l'atteindre, même en choisissant toutes les durées maximales), il ne faudra pas élaguer.
 
 	L'intérêt de cette condition d'élagage est d'arrêter plus tôt la recherche d'une solution en prévoyant qu'elle ne pourra pas être optimale.
-	Nous vérifierons par des expérimentations que cette condition améliore effectivement la complexité temporelle en terme de nombre d'appels récursif.
+	Nous vérifierons par des expérimentations que cette condition améliore effectivement la complexité temporelle en terme de nombre d'appels récursifs.
 
 	\subsection{Algorithmes}
 
@@ -354,7 +359,35 @@ Nombre d'appels : 99
 			\hline
 		\end{tabular}
 	\end{center}
+	
+	On remarque deux choses.
+	Tout d'abord, le nombre d'appels sans élagage ne dépend pas du jeu de données \emph{cd} étudié.
+	Ensuite, un seuil est atteint pour l'algorithme sans élagage avec un grand nombre de durées possibles.
+	Ceci peut être explqué par le fait que fixer D impose une certaine plage de valeurs possibles pour les durées : cela ne sert à rien de choisir comme première valeur un di supérieur à D, la solution ne pourrait alors pas être satisfaisante.
+	On obtient donc le même nombre d'appels pour les cas où $k \ge D$.
+	
+	Il s'agit maintenant de fixer k à 10 et de faire varier n.
 
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|r|r|}
+			\hline
+			Test	& n	& k	& D	& Nombre d'appels sans élagage & Nombre d'appels avec élagage \\
+			\hline
+			0 	& 5	& 10	& 30	& 10 396 	& 11 \\ \hline
+			1 	& 10	& 10	& 30	& 19 580 242 	& 2 721 266 \\ \hline
+			2 	& 15	& 10	& 30	& 449 171 192 	& 182 779 801 \\ \hline
+			3 	& 20	& 10	& 30	& 1 010 258 502 	& 581 312 322 \\ \hline
+			4 	& 50	& 10	& 30	& 1 063 267 584 	& 1 063 267 584 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	On remarque qu'il n'est possible de monter que jusqu'à $n = 50$ dans un temps raisonnable.
+	En effet, la complexité étant en $k^n$ d'après les questions préliminaires, le nombre d'appels augmente de manière exponentielle.
+	
+	En somme, la méthode des essais successifs est idéale pour se faire une idée du résultat avec des petites valeurs, puisqu'elle demande peu d'efforts de conception grâce à une trame fixe pour l'algorithme.
+	En revanche, le nombre d'appels est exponentiel selon le nombre de tâches à ordonnancer.
+	Il devient donc très long de faire tourner l'algorithme avec des grandes valeurs.
 
 \section{Programmation dynamique}
 	\paragraph{}
@@ -376,9 +409,12 @@ Nombre d'appels : 99
 	Il est vrai qu'une fois qu'on l'a déterminé il devient aisé de produire l'algorithme mais cette étape est souvent dynamique.
 	C'est pourquoi la méthode des essais successifs demande moins d'efforts de conception que la méthode de programmation dynamique qui est cependant plus efficace en terme de complexité temporelle.
 \item
+	D'après les résultats obtenus dans la phase d'expérimentation des algorithmes à essais successifs, on remarque qu'on peut aller en pratique jusqu'à une valeur $n = 50$ en fixant $k = 10$.
+	On pouvait s'y attendre car la complexité au pire en termes de nombre de candidats à examiner est en $k^n$.
+	Le nombre d'appels augmente donc de façon exponentielle, ce qui implique d'avoir une valeur de n faible pour pouvoir exécuter l'algorithme avec un temps raisonnable.
 \item
-	D'après les résultats obtenus dans la phase d'expérimentation des algorithmes à essais successifs, on remarque qu'on peut aller en pratique jusqu'à une valeur $k = 5000$.
-	Il est important de noter que la version sans élagage atteint une asymptote.
+	D'après les résultats obtenus dans la phase d'expérimentation des algorithmes à essais successifs, on remarque qu'on peut aller en pratique jusqu'à une valeur $k = 5000$ en fixant $n = 10$.
+	Il est important de noter que la version sans élagage atteint une asymptote : cela est dû au fait que lorsque $k \ge D$, choisir une durée supérieure à D pour une tâche ne peut pas être satisfaisant.
 	De plus, le nombre d'appels ne dépend pas des valeurs du tableau \emph{cd} pour la version sans élagage, ce qui n'est pas le cas de la version avec élagage.
 	Cela peut s'expliquer par le rang des durées max possible qui varie selon les tirages aléatoires.
 \item
@@ -389,6 +425,11 @@ Nombre d'appels : 99
 \end{enumerate}
 
 \section{Conclusion}
+
+En somme, nous avons pu expérimenter les différents aspects qui font d'un algorithme un bon algorithme.
+En effet, nos solutions ont des complexités très différentes, mais le meilleur algorithme nécessite un effort de conception plus important.
+Il est important de mettre en concurrence ces deux aspects car selon les données à traiter, il n'est pas forcément nécessaire d'avoir le meilleur algorithme qui soit.
+Nous avons pu voir que sur de petites valeurs, les deux méthodes sont équivalentes en temps d'exécution.
 
 
 \end{document}

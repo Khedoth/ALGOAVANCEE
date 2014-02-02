@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.1.23)  31 JAN 2014 17:49
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.1.23)  2 FEB 2014 17:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -331,29 +331,29 @@ ndu.toc)
 
 [1]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 68.
+(Font)              <12> on input line 73.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 68.
+(Font)              <8> on input line 73.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 68.
+(Font)              <6> on input line 73.
  [2] [3]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 207.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 212.
 
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 ) [4]
-[5]
+[5] [6]
 
-LaTeX Warning: Command \` invalid in math mode on input line 361.
+LaTeX Warning: Command \` invalid in math mode on input line 394.
 
 Missing character: There is no à in font cmr12!
-[6] 
+[7] [8] 
 AED: lastpage setting LastPage
-[7] (./CompteRendu.aux) ) 
+[9] (./CompteRendu.aux) ) 
 Here is how much of TeX's memory you used:
  4270 strings out of 495002
  58823 string characters out of 6180262
- 139635 words of memory out of 5000000
+ 142625 words of memory out of 5000000
  7404 multiletter control sequences out of 15000+600000
  14888 words of font info for 35 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -372,10 +372,10 @@ ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/f
 onts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmsy8.pfb>
-Output written on CompteRendu.pdf (8 pages, 204539 bytes).
+Output written on CompteRendu.pdf (10 pages, 210211 bytes).
 PDF statistics:
- 451 PDF objects out of 1000 (max. 8388607)
- 82 compressed objects within 1 object stream
+ 461 PDF objects out of 1000 (max. 8388607)
+ 86 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

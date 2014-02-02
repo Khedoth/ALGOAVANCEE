@@ -2,8 +2,8 @@ program esExperimentations;
 
 {declaration des constantes}
 const
-	n = 10;
-	k = 5000;
+	n = 50;
+	k = 10;
 	D = 30;
 	infini = 4200;
 
