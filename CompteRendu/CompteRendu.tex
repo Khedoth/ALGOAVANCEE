@@ -391,15 +391,93 @@ Nombre d'appels : 99
 
 \section{Programmation dynamique}
 	\paragraph{}
-		On cherche le coût associé à l'affectation optimale de \emph{d} unités de temps aux tâches consécutives $T_{1} à T_{j}$. Soit \emph{coût-opt(j, d)} la fonction réalisant cette association.
+		On cherche le coût associé à l'affectation optimale de \emph{d} unités de temps aux tâches consécutives $T_{1}$ à $T_{j}$. Soit \emph{coût-opt(j, d)} la fonction réalisant cette association.
 
 	\subsection{Formule de récurrence}
-		On s'appuie sur le \emph{principe d'optimalité de Bellman} : toute sous-solution d'une solution optimale est optimale. Ainsi, le coût de \emph{j} tâches auxquelles on accorde une durée totale \emph{d} de manière optimale est le minimum de la somme entre le coût de \emph{j-1} tâches auxquelles on accorde \emph{D-l} unités de temps, où \emph{l} parcourt l'ensemble des durées possibles pour la tâche \emph{j}, et le coût de la tâche \emph{j}.
+		On s'appuie sur le \emph{principe d'optimalité de Bellman} : toute sous-solution d'une solution optimale est optimale.
+		Ainsi, le coût de \emph{j} tâches auxquelles on accorde une durée totale \emph{d} de manière optimale est le minimum de la somme entre le coût de \emph{j-1} tâches auxquelles on accorde \emph{D-l} unités de temps, où \emph{l} parcourt l'ensemble des durées possibles pour la tâche \emph{j}, et le coût de la tâche \emph{j}.
+		En prenant en compte les cas particuliers, c'est-à-dire lorsque $j = 1$, $j = d$ et $j > d$, on obtient :
+		
+		$$
+		\mbox{\emph{coût-opt(j,d)}} = \left\{
+		    \begin{array}{ll}
+		        cd[1,d] & \mbox{si } j=1 \mbox{ et } d \le d_{max}[j] \\
+		        c_{min}[j] & \mbox{si } j=1 \mbox{ et } d > d_{max}[j] \\
+		        \mbox{\emph{coût-opt(j-1,j-1)}} + cd[j,1] & \mbox{si } j=d \\
+		        \infty & \mbox{si } j>d \\
+		        min_{l \in cd[j]}(\mbox{\emph{coût-opt(j-1,d-l)}} + cd[j,l]) & \mbox{sinon} \\
+		    \end{array}
+		\right.
+		$$
+		
 	\subsection{Structure tabulaire}
+		Pour enregistrer les résultats, on décide de remplir un tableau tel que chaque ligne correspondra à un nombre de tâche à exécuter et chaque colonne représentera une durée totale.
+		Ainsi, le résultat cherché, autrement dit \emph{coût-opt(j, d)}, se trouvera à la case d'indice de ligne $j$ et d'indice de colonne $d$.
+		De plus, notre stratégie de remplissage du tableau sera de le remplir horizontalement, ligne par ligne.
+		En effet, si on regarde notre formule de récurrence, on peut remarquer qu'on n'a besoin que de valeurs situées sur la ligne précédente pour continuer.
+	
 	\subsection{Algorithme}
+		Une fois cette analyse terminée, il s'agit de réaliser un algorithme exclusivement itératif.
+		La fonction \emph{coût-opt(j, d)} remplira le tableau que nous avons défini précédemment puis retournera la valeur située à la case d'indice de ligne $j$ et d'indice de colonne $d$.
+		
 	\subsection{Complexité temporelle}
+		La complexité temporelle peut se calculer en comptant le nombre de tours de boucle qu'on réalise dans le pire des cas.
+		
 	\subsection{Complexité spatiale}
+		La complexité spatiale n'est pas négligeable comme dans le cas des algorithmes à essais successifs.
+		Il convient donc de s'y intéresser.
+		Tout d'abord, elle est liée au remplissage du tableau rempli dans le but de renvoyer la valeur recherchée.
+		Il faut donc compter le nombre de cases à remplir avant de trouver le résultat : c'est $j*d$ puisque on réalise autant de ligne qu'il y a de tâches à ordonnancer et autant de colonne que de durée possibles d'ordonnancement.
+	
+	\subsection{Expérimentations}
+		Pour expérimenter cet algorithme, nous avons procédé en trois temps.
+		Tout d'abord, nous avons essayé d'obtenir un premier résultat avec les valeurs du sujet.
+		Ensuite, nous avons comparé les performances de cet algorithme avec celui réalisé par la méthode des essais successifs avec élagage (le plus performant) en mesurant leurs temps d'exécutions respectifs.
+		En effet, la comparaison par le nombre d'appels n'est plus pertinante, les deux algorithmes ayant un fonctionnement radicalement différent.
+		Enfin, nous avons cherché les limites de l'algorithme à programmation dynamique en fixant tout d'abord n à 10 puis k à 10.
+		
+		Premièrement, les résultat que nous obtenons avec les valeurs de l'énoncé sont les suivants :
+		
+		On retrouve heureusement la valeur calculée précédemment.
+		
+		Deuxièmement, nous avons établi un tableau de comparaison de l'algorithme à essais successifs avec élagage et de l'algorithme à programmation dynamique.
 
+		\begin{center}
+		\begin{tabular}{|c|c|c|c|r|r|}
+			\hline
+			Test	& n	& k	& D	& Temps d'exécution essais successifs & Temps d'exécution essais successifs \\
+			\hline
+		\end{tabular}
+		\end{center}
+		
+		Pour finir, nous avons fait varié k, puis n, en fixant l'autre valeur à 10 et en mesurant le temps d'exécution de l'algorithme à programmation dynamique.
+		
+		\begin{center}
+		\begin{tabular}{|c|c|c|c|r|r|}
+			\hline
+			Test	& n	& k	& D	& Temps d'exécution \\
+			\hline
+			0		& 10 & 5 & D & \\
+			1		& 10 & 10 & D & \\
+			2		& 10 & 50 & D & \\
+			3		& 10 & 100 & D & \\
+			4		& 10 & 500 & D & \\
+			5		& 10 & 1 000 & D & \\
+			6		& 10 & 5 000 & D & \\
+			7		& 10 & 10 000 & D & \\
+			\hline
+			8		& 5 & 10 & D & \\
+			9		& 10 & 10 & D & \\
+			10		& 50 & 10 & D & \\
+			11		& 100 & 10 & D & \\
+			12		& 500 & 10 & D & \\
+			13		& 1 000 & 10 & D & \\
+			14		& 5 000 & 10 & D & \\
+			15		& 10 000 & 10 & D & \\
+			\hline
+		\end{tabular}
+		\end{center}
+		
 \section{Compléments}
 \begin{enumerate}
 \item
@@ -421,7 +499,7 @@ Nombre d'appels : 99
 \item
 	Les algorithmes de type "diviser pour régner" sont basés sur une équation de récurrence de même type que ceux utilisant la programmation dynamique.
 	Il est donc possible de résoudre le problème posé à l'aide d'une solution de type "diviser pour régner" en théorie.
-	Cependant, la complexité spatiale serait très importante à cause du très grand nombre d'appels récursifs.
+	Cependant, la complexité serait très importante à cause du très grand nombre d'appels récursifs.
 \end{enumerate}
 
 \section{Conclusion}
