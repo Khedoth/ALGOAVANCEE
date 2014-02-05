@@ -460,62 +460,56 @@ Nombre d'appels : 99
 		\end{tabbing}
 		
 	\subsection{Complexité temporelle}
-		La complexité temporelle peut se calculer en comptant le nombre de tours de boucle qu'on réalise dans le pire des cas.
+		La complexité temporelle est liée au remplissage de la structure tabulaire.
+		Tout d'abord, il s'agit de remplir $k \times n$ cases et chaque case correspond à une somme de k pour le calcul du mininum ($\sum k = k\times(k+1)/2$).
+		On obtient donc une complexité égale à $k \times n \times k^2 = nk^3$.
 		
 	\subsection{Complexité spatiale}
 		La complexité spatiale n'est pas négligeable comme dans le cas des algorithmes à essais successifs.
 		Il convient donc de s'y intéresser.
 		Tout d'abord, elle est liée au remplissage du tableau rempli dans le but de renvoyer la valeur recherchée.
-		Il faut donc compter le nombre de cases à remplir avant de trouver le résultat : c'est $j*d$ puisque on réalise autant de ligne qu'il y a de tâches à ordonnancer et autant de colonne que de durée possibles d'ordonnancement.
+		Il faut donc compter le nombre de cases à remplir avant de trouver le résultat : c'est $j \times d$ puisque on réalise autant de ligne qu'il y a de tâches à ordonnancer et autant de colonne que de durée possibles d'ordonnancement.
 	
 	\subsection{Expérimentations}
-		Pour expérimenter cet algorithme, nous avons procédé en trois temps.
+		Pour expérimenter cet algorithme, nous avons procédé en deux temps.
 		Tout d'abord, nous avons essayé d'obtenir un premier résultat avec les valeurs du sujet.
-		Ensuite, nous avons comparé les performances de cet algorithme avec celui réalisé par la méthode des essais successifs avec élagage (le plus performant) en mesurant leurs temps d'exécutions respectifs.
-		En effet, la comparaison par le nombre d'appels n'est plus pertinante, les deux algorithmes ayant un fonctionnement radicalement différent.
-		Enfin, nous avons cherché les limites de l'algorithme à programmation dynamique en fixant tout d'abord n à 10 puis k à 10.
-		
-		Premièrement, les résultat que nous obtenons avec les valeurs de l'énoncé sont les suivants :
+		Ensuite, nous avons mesuré les performances de cet algorithme en testant le programme \emph{prog-dyn-experimentations} avec de grandes valeurs (on génère le tableau des coûts et durées aléatoirement).
+	
+		Premièrement, les résultats que nous obtenons avec les valeurs de l'énoncé sont les suivants :
+	
+		\begin{framed}
+		\begin{verbatim}
+		Tableau des couts et durees :
+
+		110 90 65 55 4200
+		120 90 70 50 40
+		90 70 65 60 4200
+		65 60 55 4200 4200
+
+		n = 4
+		k = 5
+		D = 10
+
+		dmax : [4,5,4,3,]
+
+		cmin: [55,40,60,55,]
+
+		110, 90, 65, 55, 55, 55, 55, 55, 55, 55, 
+		4200, 230, 200, 180, 155, 135, 115, 105, 95, 95, 
+		4200, 4200, 320, 290, 270, 245, 225, 205, 185, 175, 
+		4200, 4200, 4200, 385, 355, 335, 310, 290, 270, 250, 
+
+		cout_opt : 250
+		\end{verbatim}
+		\end{framed}
 		
 		On retrouve heureusement la valeur calculée précédemment.
 		
-		Deuxièmement, nous avons établi un tableau de comparaison de l'algorithme à essais successifs avec élagage et de l'algorithme à programmation dynamique.
-
-		\begin{center}
-		\begin{tabular}{|c|c|c|c|r|r|}
-			\hline
-			Test	& n	& k	& D	& Temps d'exécution essais successifs & Temps d'exécution essais successifs \\
-			\hline
-		\end{tabular}
-		\end{center}
+		Enfin, nous avons fait varier les valeurs k et n en fixant l'autre à 10.
+		On remarque qu'on peut faire monter ces deux valeurs à plus de 10 000 sans que le temps d'exécution du programme dépasse les 1 seconde.
+		De plus, la capacité du langage Pascal à représenter les grands nombres atteint ses limites avant les limites de notre programme.
 		
-		Pour finir, nous avons fait varié k, puis n, en fixant l'autre valeur à 10 et en mesurant le temps d'exécution de l'algorithme à programmation dynamique.
-		
-		\begin{center}
-		\begin{tabular}{|c|c|c|c|r|r|}
-			\hline
-			Test	& n	& k	& D	& Temps d'exécution \\
-			\hline
-			0		& 10 & 5 & D & \\
-			1		& 10 & 10 & D & \\
-			2		& 10 & 50 & D & \\
-			3		& 10 & 100 & D & \\
-			4		& 10 & 500 & D & \\
-			5		& 10 & 1 000 & D & \\
-			6		& 10 & 5 000 & D & \\
-			7		& 10 & 10 000 & D & \\
-			\hline
-			8		& 5 & 10 & D & \\
-			9		& 10 & 10 & D & \\
-			10		& 50 & 10 & D & \\
-			11		& 100 & 10 & D & \\
-			12		& 500 & 10 & D & \\
-			13		& 1 000 & 10 & D & \\
-			14		& 5 000 & 10 & D & \\
-			15		& 10 000 & 10 & D & \\
-			\hline
-		\end{tabular}
-		\end{center}
+		On peut conclure que l'algorithme utilisant la méthode de programmation dynamique est beaucoup plus efficace que celui à essais successifs.
 		
 \section{Compléments}
 \begin{enumerate}
@@ -535,6 +529,8 @@ Nombre d'appels : 99
 	De plus, le nombre d'appels ne dépend pas des valeurs du tableau \emph{cd} pour la version sans élagage, ce qui n'est pas le cas de la version avec élagage.
 	Cela peut s'expliquer par le rang des durées max possible qui varie selon les tirages aléatoires.
 \item
+	Comme nous l'avons évoqué précédemment, il est possible de faire fonctionner le programme utilisant la méthode de programmation dynamique avec de très grande valeurs sans augmenter significativement le temps d'exécution :
+	les limites du langage Pascal pour représenter les grands nombres sont atteintes plus rapidemment. Ainsi, jusqu'à $n = 50000$, le programme s'exécute en moins d'une seconde.
 \item
 	Les algorithmes de type "diviser pour régner" sont basés sur une équation de récurrence de même type que ceux utilisant la programmation dynamique.
 	Il est donc possible de résoudre le problème posé à l'aide d'une solution de type "diviser pour régner" en théorie.
@@ -546,7 +542,7 @@ Nombre d'appels : 99
 En somme, nous avons pu expérimenter les différents aspects qui font d'un algorithme un bon algorithme.
 En effet, nos solutions ont des complexités très différentes, mais le meilleur algorithme nécessite un effort de conception plus important.
 Il est important de mettre en concurrence ces deux aspects car selon les données à traiter, il n'est pas forcément nécessaire d'avoir le meilleur algorithme qui soit.
-Nous avons pu voir que sur de petites valeurs, les deux méthodes sont équivalentes en temps d'exécution.
+Nous avons en effet pu voir que sur de petites valeurs, les deux méthodes sont équivalentes en temps d'exécution.
 
 
 \end{document}
