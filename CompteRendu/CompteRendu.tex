@@ -420,6 +420,45 @@ Nombre d'appels : 99
 		Une fois cette analyse terminée, il s'agit de réaliser un algorithme exclusivement itératif.
 		La fonction \emph{coût-opt(j, d)} remplira le tableau que nous avons défini précédemment puis retournera la valeur située à la case d'indice de ligne $j$ et d'indice de colonne $d$.
 		
+		\begin{tabbing}
+
+			\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\hspace{1cm}\=\kill % défini la longueur d'une tabulation
+			
+			\textbf{procédure} $cout\_opt$ (ent j, ent d); \\
+			\textbf{var} \> ent $i, l, min, p, q$; \\
+			\> ent[1..n, 1..D] $tableau$; \\
+			\textbf{début} \\
+			\> \textbf{pour} $p$ \textbf{de} 1 \textbf{à} j \textbf{faire} \\
+			\>\> \textbf{pour} $q$ \textbf{de} 1 \textbf{à} $d$ \textbf{faire} \\
+			\>\>\> \textbf{si} $p$ = 1 \textbf{alors} \\
+			\>\>\>\> \textbf{si} $q \le dmax[p]$ \textbf{alors} \\
+			\>\>\>\>\> $tableau[p,q] \leftarrow cd[1,q]$; \\
+			\>\>\>\> \textbf{else} \\
+			\>\>\>\>\> $tableau[p,q] \leftarrow cmin[p]$; \\
+			\>\>\>\> \textbf{fsi}; \\
+			\>\>\> \textbf{else if} $p = q$ \textbf{alors} \\
+			\>\>\>\> $tableau[p,q] \leftarrow tableau[p-1,q-1] + cd[p,1]$ ; \\
+			\>\>\> \textbf{else if} $p > q$ \textbf{alors} \\
+			\>\>\>\> $tableau[p,q] \leftarrow \infty$ ; \\
+			\>\>\> \textbf{else} \\
+			\>\>\>\> $min \leftarrow \infty$ ;\\
+			\>\>\>\> $l \leftarrow 1$ ; \\
+			\>\>\>\> \textbf{pour} $i$ \textbf{de} 1 \textbf{à} $q-1$ \textbf{faire} \\
+			\>\>\>\>\> \textbf{si} $min > tableau[p-1, q-i] + cd[p,i]$ \textbf{alors} \\
+			\>\>\>\>\>\> $min \leftarrow tableau[p-1, q-i] + cd[p,i]$ ; \\
+			\>\>\>\>\>\> $l \leftarrow i$ ; \\
+			\>\>\>\>\> \textbf{fsi} ; \\
+			\>\>\>\> \textbf{fin}; \\
+			\>\>\>\> $tableau[p,q] \leftarrow tableau[p-1,q-l] + cd[p,l]$ ; \\
+			\>\>\> \textbf{end} ; \\
+			\>\> \textbf{end} ; \\
+			\> \textbf{end} ; \\
+			\textbf{end} ; \\
+			
+			
+			
+		\end{tabbing}
+		
 	\subsection{Complexité temporelle}
 		La complexité temporelle peut se calculer en comptant le nombre de tours de boucle qu'on réalise dans le pire des cas.
 		

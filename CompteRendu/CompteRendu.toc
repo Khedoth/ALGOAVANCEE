@@ -24,8 +24,8 @@
 \contentsline {subsection}{\numberline {4.1}Formule de r\IeC {\'e}currence}{8}
 \contentsline {subsection}{\numberline {4.2}Structure tabulaire}{8}
 \contentsline {subsection}{\numberline {4.3}Algorithme}{8}
-\contentsline {subsection}{\numberline {4.4}Complexit\IeC {\'e} temporelle}{8}
-\contentsline {subsection}{\numberline {4.5}Complexit\IeC {\'e} spatiale}{8}
-\contentsline {subsection}{\numberline {4.6}Exp\IeC {\'e}rimentations}{8}
-\contentsline {section}{\numberline {5}Compl\IeC {\'e}ments}{9}
-\contentsline {section}{\numberline {6}Conclusion}{10}
+\contentsline {subsection}{\numberline {4.4}Complexit\IeC {\'e} temporelle}{9}
+\contentsline {subsection}{\numberline {4.5}Complexit\IeC {\'e} spatiale}{9}
+\contentsline {subsection}{\numberline {4.6}Exp\IeC {\'e}rimentations}{9}
+\contentsline {section}{\numberline {5}Compl\IeC {\'e}ments}{10}
+\contentsline {section}{\numberline {6}Conclusion}{11}
